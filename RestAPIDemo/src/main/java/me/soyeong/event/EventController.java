@@ -21,11 +21,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class EventController {
 	//@Autowired
 	private final EventRepository eventRepository;
-	
 	private final ModelMapper modelMapper; //등록한 bean을 받음
-	public EventController(EventRepository eventRepository, ModelMapper modelMapper) {
+	private final EventValidator eventValidator;
+	
+	public EventController(EventRepository eventRepository, ModelMapper modelMapper, EventValidator eventValidator) {
 		this.modelMapper = modelMapper;
 		this.eventRepository = eventRepository;
+		this.eventValidator = eventValidator;
 	}
 	
 	//생성자를 통한 주입도 가능
@@ -41,8 +43,10 @@ public class EventController {
 		if(errors.hasErrors()) {
 			return ResponseEntity.badRequest().build();
 		}
-		System.out.println(errors);
-		
+		eventValidator.validate(eventDto, errors);
+		if(errors.hasErrors()) {
+			return ResponseEntity.badRequest().build();
+		}
 		Event event = modelMapper.map(eventDto, Event.class);
 		Event newEvent = this.eventRepository.save(event);
 		URI createdUri = linkTo(EventController.class).slash(newEvent.getId()).toUri();
