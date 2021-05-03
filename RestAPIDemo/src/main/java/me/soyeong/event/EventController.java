@@ -30,22 +30,16 @@ public class EventController {
 		this.eventValidator = eventValidator;
 	}
 	
-	//생성자를 통한 주입도 가능
-	/*
-	 * private final EventRepository eventRepository;
-	 * public EventController(EventRepository eventRepository){
-	 * 	this.eventRepository = eventRepository;
-	 * }
-	 * */
+
 	
 	@PostMapping
 	public ResponseEntity createEvent(@RequestBody @Valid EventDto eventDto, Errors errors) {
 		if(errors.hasErrors()) {
-			return ResponseEntity.badRequest().build();
+			return ResponseEntity.badRequest().body(errors);
 		}
 		eventValidator.validate(eventDto, errors);
 		if(errors.hasErrors()) {
-			return ResponseEntity.badRequest().build();
+			return ResponseEntity.badRequest().body(errors);
 		}
 		Event event = modelMapper.map(eventDto, Event.class);
 		Event newEvent = this.eventRepository.save(event);
