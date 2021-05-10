@@ -67,11 +67,14 @@ public class EventControllerTest {
 		.andExpect(jsonPath("id").exists())
 		.andExpect(header().exists(HttpHeaders.LOCATION))
 		.andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
-		
 		//입력 값 제한
-		.andExpect(jsonPath("id").value(Matchers.not(100)))
-		.andExpect(jsonPath("free").value(Matchers.not(true)));
+		.andExpect(jsonPath("free").value(false))
+		.andExpect(jsonPath("offline").value(true))
+		.andExpect(jsonPath("_links.self").exists())
+		.andExpect(jsonPath("_links.query-events").exists())
+		.andExpect(jsonPath("_links.update-events").exists());
 		
+		 
 	}
 	@Test
 	@TestDescription("입력 받을 수 없는 값을 사용하는 경우 에러가 발생하는 테스트")
@@ -122,7 +125,7 @@ public class EventControllerTest {
 				.closeEnrollmentDateTime(LocalDateTime.of(2020, 1,3,14,15))
 				.beginEventDateTime(LocalDateTime.of(2020, 1,5,15,10))
 				.endEventDateTime(LocalDateTime.of(2020, 1,3,14,15))
-				.basePrice(100000 )
+				.basePrice(100000)
 				.maxPrice(200)
 				.limitOfEnrollment(100)
 				.location("강남역")
