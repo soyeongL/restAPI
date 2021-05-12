@@ -1,5 +1,6 @@
 package me.soyeong;
 
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -12,8 +13,11 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.restdocs.RestDocsMockMvcConfigurationCustomizer;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -22,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import me.soyeong.common.RestDocsConfiguration;
 import me.soyeong.common.TestDescription;
 import me.soyeong.event.Event;
 import me.soyeong.event.EventDto;
@@ -29,6 +34,8 @@ import me.soyeong.event.EventDto;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@AutoConfigureRestDocs
+@Import(RestDocsConfiguration.class)
 //@WebMvcTest
 public class EventControllerTest {
 	@Autowired
@@ -72,7 +79,9 @@ public class EventControllerTest {
 		.andExpect(jsonPath("offline").value(true))
 		.andExpect(jsonPath("_links.self").exists())
 		.andExpect(jsonPath("_links.query-events").exists())
-		.andExpect(jsonPath("_links.update-events").exists());
+		.andExpect(jsonPath("_links.update-events").exists())
+		.andDo(document("create-event"))
+		;
 		
 		 
 	}
