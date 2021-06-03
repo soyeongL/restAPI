@@ -6,6 +6,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 
 import java.time.LocalDateTime;
 
@@ -18,6 +20,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.RestDocsMockMvcConfi
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.hateoas.Links;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -32,7 +35,7 @@ import me.soyeong.event.Event;
 import me.soyeong.event.EventDto;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest //MockMVC 와 함께 사용해서 MockMvc로 테스트를 할 수 있음, 통합 테스트용 어노테이션
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
 @Import(RestDocsConfiguration.class)
@@ -80,7 +83,16 @@ public class EventControllerTest {
 		.andExpect(jsonPath("_links.self").exists())
 		.andExpect(jsonPath("_links.query-events").exists())
 		.andExpect(jsonPath("_links.update-events").exists())
-		.andDo(document("create-event"))
+		.andDo(document("create-event",
+				links(
+						linkWithRel("self").description("link to self"),
+						linkWithRel("query-events").description("link to query-events"),
+						linkWithRel("update-events").description("link to update-event")
+						),
+				requestHeaders(
+						headerWithName(HttpHeaders.ACCEPT),
+						)
+		))
 		;
 		
 		 
