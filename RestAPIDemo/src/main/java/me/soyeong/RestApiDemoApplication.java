@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.ui.ModelMap;
 
+
 @SpringBootApplication
 public class RestApiDemoApplication {
 
