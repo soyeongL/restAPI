@@ -36,7 +36,7 @@ import me.soyeong.event.EventDto;
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
 @Import(RestDocsConfiguration.class)
-//@WebMvcTest
+//@WebMvcTest >> 웹용 bean만 등록됨, repository 가 등록되지 않음
 public class EventControllerTest {
 	@Autowired
 	MockMvc mockMvc;

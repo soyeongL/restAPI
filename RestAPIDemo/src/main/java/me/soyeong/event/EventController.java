@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping(value="/api/events", produces=MediaTypes.HAL_JSON_VALUE)
 public class EventController {
-	//@Autowired
 	private final EventRepository eventRepository;
 	private final ModelMapper modelMapper; //등록한 bean을 받음
 	private final EventValidator eventValidator;
@@ -31,8 +30,6 @@ public class EventController {
 		this.eventRepository = eventRepository;
 		this.eventValidator = eventValidator;
 	}
-	
-
 	
 	@PostMapping
 	public ResponseEntity createEvent(@RequestBody @Valid EventDto eventDto, Errors errors) {
