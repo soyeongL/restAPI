@@ -88,7 +88,8 @@ public class EventControllerTest {
 				links(
 						linkWithRel("self").description("link to self"),
 						linkWithRel("query-events").description("link to query-events"),
-						linkWithRel("update-events").description("link to update-event")
+						linkWithRel("update-events").description("link to update-event"),
+						linkWithRel("profile").description("link to update-event")
 						),
 				requestHeaders(
 						headerWithName(HttpHeaders.ACCEPT).description("accept header"),
