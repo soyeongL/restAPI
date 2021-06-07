@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 
 import java.time.LocalDateTime;
 
@@ -90,8 +91,43 @@ public class EventControllerTest {
 						linkWithRel("update-events").description("link to update-event")
 						),
 				requestHeaders(
-						headerWithName(HttpHeaders.ACCEPT),
+						headerWithName(HttpHeaders.ACCEPT).description("accept header"),
+						headerWithName(HttpHeaders.CONTENT_TYPE).description("content type header")
+						),
+				requestFields(
+						fieldWithPath("name").description("name of new event"),
+						fieldWithPath("description").description("description of new event"),
+						fieldWithPath("beginEnrollmentDateTime").description("begin date of new event"),
+						fieldWithPath("closeEnrollmentDateTime").description("close date of new event"),
+						fieldWithPath("beginEventDateTime").description("begint date of new event"),
+						fieldWithPath("endEventDateTime").description("end date of new event"),
+						fieldWithPath("location").description("location of new event"),
+						fieldWithPath("basePrice").description("basePrice of new event"),
+						fieldWithPath("maxPrice").description("maxPrice of new event"),
+						fieldWithPath("limitOfEnrollment").description("limit of new event")
+						
+						),
+				responseHeaders(
+						headerWithName(HttpHeaders.LOCATION).description("response header - location"),
+						headerWithName(HttpHeaders.CONTENT_TYPE).description("response header - content type")
+						),
+				//필드의 일부만 테스트하고자 할 때 사용하는 부분!
+				relaxedResponseFields(
+						fieldWithPath("name").description("name of new event"),
+						fieldWithPath("description").description("description of new event"),
+						fieldWithPath("beginEnrollmentDateTime").description("begin date of new event"),
+						fieldWithPath("closeEnrollmentDateTime").description("close date of new event"),
+						fieldWithPath("beginEventDateTime").description("begint date of new event"),
+						fieldWithPath("endEventDateTime").description("end date of new event"),
+						fieldWithPath("location").description("location of new event"),
+						fieldWithPath("basePrice").description("basePrice of new event"),
+						fieldWithPath("maxPrice").description("maxPrice of new event"),
+						fieldWithPath("limitOfEnrollment").description("limit of new event"),
+						fieldWithPath("offline").description("offline of new event"),
+						fieldWithPath("free").description("it tells if this event is free"),
+						fieldWithPath("eventStatus").description("evnet status")
 						)
+				
 		))
 		;
 		
